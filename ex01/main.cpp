@@ -6,7 +6,7 @@
 /*   By: mel-fihr <mel-fihr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 11:51:41 by mel-fihr          #+#    #+#             */
-/*   Updated: 2025/01/12 18:03:24 by mel-fihr         ###   ########.fr       */
+/*   Updated: 2025/01/26 10:58:38 by mel-fihr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ std::string getInput(const std::string& prompt) {
         if (std::cin.eof()) {
             std::cout << "\nExiting program." << std::endl;
             exit(0);
+        }
+        for (size_t i = 0; i < input.length(); i++) {
+            if (!isprint(input[i]) || isspace(input[i])) {
+                std::cout << "Invalid input!" << std::endl;
+                input.clear();
+                break;
+            }  
         }
     } while (input.empty());
     return input;
@@ -73,13 +80,13 @@ int main() {
             std::cout << "\nEnter index to display: ";
             std::getline(std::cin, indexStr);
             
-            try {
-                int index = std::stoi(indexStr);
-                phoneBook.displayContact(index);
-            }
-            catch (std::exception&) {
+            if (indexStr.length() != 1 || !isdigit(indexStr[0]))
+            {
                 std::cout << "Invalid index!" << std::endl;
+                continue;
             }
+            int index = indexStr[0] - '0';
+            phoneBook.displayContact(index);
         }
     }
     
